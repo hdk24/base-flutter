@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "{project-number}",
+    "project_id": "{project-id}",
+    "storage_bucket": "{project-storage}"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "{app-id-dev}",
+        "android_client_info": {
+          "package_name": "{package-name-dev}"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "{api-key-dev}"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "{app-id-prod}",
+        "android_client_info": {
+          "package_name": "{package-name-prod}"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "{api-key-prod}"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

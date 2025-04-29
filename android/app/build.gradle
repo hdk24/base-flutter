@@ -1,0 +1,104 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+// get local properties variable
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader("UTF-8") { reader ->
+        localProperties.load(reader)
+    }
+}
+
+// get keystore to build app
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+// get environment variables
+def environmentVariables = []
+if (project.hasProperty('dart-defines')) {
+    environmentVariables = project.property('dart-defines')
+            .split(',')
+            .collectEntries { entry ->
+                def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+                [(pair.first()): pair.last()]
+            }
+}
+
+def flutterVersionCode = environmentVariables.VERSION_CODE
+if (flutterVersionCode == null) {
+    flutterVersionCode = localProperties.getProperty("flutter.versionCode") ?: "1"
+}
+
+def flutterVersionName = environmentVariables.VERSION_NAME
+if (flutterVersionName == null) {
+    flutterVersionName = localProperties.getProperty("flutter.versionName") ?: "1.0.0"
+}
+
+android {
+    namespace = "com.hdk24.flutter"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = "27.0.12077973"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    defaultConfig {
+        applicationId = "com.hdk24.flutter"
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
+
+        resValue "string", "app_name", environmentVariables.APP_NAME
+        resValue "string", "facebook_app_id", environmentVariables.FACEBOOK_APP_ID
+        resValue "string", "facebook_client_token", environmentVariables.FACEBOOK_CLIENT_TOKEN
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties["storeFile"])
+            storePassword keystoreProperties["storePassword"]
+            keyPassword keystoreProperties["keyPassword"]
+            keyAlias keystoreProperties["keyAlias"]
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "env"
+    productFlavors {
+        dev {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+        }
+        prod {
+            dimension = "env"
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    implementation "androidx.browser:browser:1.8.0"
+}

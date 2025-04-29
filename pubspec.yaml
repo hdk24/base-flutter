@@ -1,0 +1,62 @@
+name: base_flutter
+description: "Base Flutter mobile app project with Clean Architecture."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.4 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #  localization
+  flutter_localizations:
+    sdk: flutter
+
+  # network Dependencies
+  dio: ^5.8.0+1
+
+  # storage
+  shared_preferences: ^2.2.3
+
+  # state management
+  flutter_bloc: ^9.1.0
+  provider: ^6.1.2
+
+  # analytics
+  firebase_core: 2.27.0
+  firebase_analytics: 10.8.9
+  facebook_app_events: ^0.19.5
+
+  # navigation
+  go_router: ^12.1.3
+
+  # ui dependencies
+  infinite_scroll_pagination: ^4.0.0
+  cached_network_image: ^3.4.1
+  flutter_svg: ^2.0.7
+  shimmer: ^3.0.0
+  cupertino_icons: ^1.0.2
+  google_fonts: 6.1.0
+
+  # utility
+  get_it: ^7.6.7
+  equatable: ^2.0.5
+  intl: ^0.19.0
+  json_annotation: ^4.8.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+  mocktail: ^1.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/icons/
+    - assets/images/
+
