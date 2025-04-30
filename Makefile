@@ -49,3 +49,21 @@ build-appbundle: prerequisite clean
 build-ios: prerequisite
 	@echo ">> Build iOS $(env)-${VERSION_NAME}+${VERSION_CODE} <<"
 	@flutter build ios --flavor $(env) -t lib/main.dart --dart-define-from-file=.env.$(env) --build-number=${VERSION_CODE} --build-name=${VERSION_NAME} --no-codesign
+
+# make generate-keystore alias=upload password=123
+generate-keystore:
+	@echo ">> GENERATE KEYSTORE <<"
+	@keytool -genkeypair \
+       -v \
+       -keystore ./android/upload-keystore.jks \
+       -alias $(alias) \
+       -keyalg RSA \
+       -keysize 2048 \
+       -validity 10000 \
+       -storepass $(password) \
+       -keypass $(password) \
+       -dname "CN=Android-Dev,O=Mobile-App,OU=Development,C=ID"
+	@echo "storePassword=$(password)" > $(KEY_PROPERTIES_FILE)
+	@echo "keyPassword=$(password)" >> $(KEY_PROPERTIES_FILE)
+	@echo "keyAlias=$(alias)" >> $(KEY_PROPERTIES_FILE)
+	@echo "storeFile=../upload-keystore.jks" >> $(KEY_PROPERTIES_FILE)
